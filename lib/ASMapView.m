@@ -17,7 +17,7 @@ typedef enum {
  This indicates the amount of change in views display points via touch that
  triggers a zoom change
  */
-NSInteger const kASMapViewTouchSensitivity = 5;
+NSInteger const kASMapViewTouchSensitivity = 4;
 /*
  The base zoom factor is multiplied via velocity^2 to get the zoom factor
  */
@@ -36,7 +36,7 @@ double const kASMapViewBaseZoom = 2;
 
 //@property (nonatomic, assign) NSInteger zoomMoveTouchCount;
 
--(void) applyZoom:(BOOL)increaseZoom withVelocity:(double)velocity;
+-(void) applyZoom:(BOOL)increaseZoom;
 
 @end
 
@@ -90,16 +90,11 @@ double const kASMapViewBaseZoom = 2;
     CGFloat deltaYPoint = newLocation.y - prevLocation.y;
     
     if (abs(deltaYPoint) > kASMapViewTouchSensitivity) {
-        
-        double velocity = (newLocation.y - prevLocation.y) / touch.timestamp;
-        velocity = pow(velocity, 2);
-        NSLog(@"%f velocioty %f", deltaYPoint, velocity);
-        
         if (deltaYPoint < 0) {
-            [self applyZoom:YES withVelocity:2];
+            [self zoomOut];
         }
         else {
-            [self applyZoom:NO withVelocity:2];
+            [self zoomIn];
         }
     }
 }
@@ -118,15 +113,15 @@ double const kASMapViewBaseZoom = 2;
 
 -(void) zoomIn
 {
-    [self applyZoom:YES withVelocity:2];
+    [self applyZoom:YES];
 }
 
 -(void) zoomOut
 {
-    [self applyZoom:NO withVelocity:2];
+    [self applyZoom:NO];
 }
 
--(void) applyZoom:(BOOL)increaseZoom withVelocity:(double)velocity
+-(void) applyZoom:(BOOL)increaseZoom
 {
     CGFloat currentWidth = [self bounds].size.width;
     CGFloat currentHeight = [self bounds].size.height;
@@ -136,7 +131,7 @@ double const kASMapViewBaseZoom = 2;
     double longitudePerPoint = currentRegion.span.longitudeDelta / currentHeight;
     
     //quad the zoom at each level
-    double zoomFactor = pow(kASMapViewBaseZoom, velocity);
+    double zoomFactor = kASMapViewBaseZoom;
     
     double newLatitudePerPoint;
     double newLongitudePerPoint;
@@ -160,33 +155,6 @@ double const kASMapViewBaseZoom = 2;
         [self setRegion:mapRegion animated:NO];
     }
 }
-
-/*
--(UIGestureRecognizer*) getTapGestureFromView:(UIView*)v forTapCount:(NSInteger)tapCount
-{
-    NSArray* gestureRecognizers = [v gestureRecognizers];
-    if (gestureRecognizers && [gestureRecognizers count] > 0) {
-        for (UIGestureRecognizer* gestureRecognizer in gestureRecognizers) {
-            if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
-                UITapGestureRecognizer* tap = (UITapGestureRecognizer*)gestureRecognizer;
-                NSInteger numberOfTapsRequired = [tap numberOfTapsRequired];
-                if (numberOfTapsRequired == tapCount) {
-                    return tap;
-                }
-            }
-        }
-    }
-    else {
-        for (UIView* subview in [v subviews]) {
-            UIGestureRecognizer* gesture = [self getTapGestureFromView:subview forTapCount:tapCount];
-            if (gesture) {
-                return gesture;
-            }
-        }
-    }
-    return nil;
-}
-*/
 
 @end
 
