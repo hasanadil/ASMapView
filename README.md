@@ -1,7 +1,7 @@
 ASMapView
 =========
 
-ASMapView is a subclass of MKMapView from iOS Mapkit framework. ASMapView adds the ability to zoom in and out of the map using just one hand. The gesture behavior is as implemented in the Google Maps app. I have used that as a model and implemented it for MapKit. 
+ASMapView is a subclass of MKMapView from iOS Mapkit framework. ASMapView adds the ability to zoom in and out of the map using just one hand. The gesture behavior is as implemented in the Google Maps app. I have used that as a model and implemented it for MapKit. The gesture works by double-tapping on the map and with keeping your finger pressed, panning up to zoom out and panning down to zoom in.
 
 The goal of ASMapView is to be as close to MkMapView as possible and add no new requirements for the developer.
 
