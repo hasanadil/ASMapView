@@ -7,7 +7,7 @@ The goal of ASMapView is to be as close to MkMapView as possible and add no new 
 
 How does it work?
 =================
-Simple, create an instance of ASMapView just as you would for MkMapView and add it as a subview in your view. You can also use it by dragging the Map view in Interface Buildre and set ASMapView as the custom class.
+Simple, create an instance of ASMapView just as you would for MkMapView and add it as a subview in your view. You can also use it by dragging the Map view in Interface Builder and set ASMapView as the custom class.
 
 Installation
 ============
