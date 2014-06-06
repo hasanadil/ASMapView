@@ -156,6 +156,58 @@ double const kASMapViewBaseZoom = 2;
     }
 }
 
+#pragma mark utility methods for map annotations
+
+/**
+ Determine the centroid of the set of the points provided
+ */
+-(CLLocationCoordinate2D) centerOfCoordinatesIn:(CLLocationCoordinate2D*)coordinates count:(NSInteger)count
+{
+    double xCenter = 0;
+    double yCenter = 0;
+    double zCenter = 0;
+    
+    for (int i=0; i < count; i++) {
+        
+        //convert to radians
+        CLLocationCoordinate2D coord = coordinates[i];
+        double latRadians = [self degreesToRadians:coord.latitude];
+        double lngRadians = [self degreesToRadians:coord.longitude];
+        
+        //convert to cartesian (x,y,z) coordinates
+        double x = cos(latRadians) * cos(lngRadians);
+        double y = cos(latRadians) * sin(lngRadians);
+        double z = sin(latRadians);
+        
+        xCenter = xCenter + x;
+        yCenter = yCenter + y;
+        zCenter = zCenter + z;
+    }
+    
+    //combined weighted cartesian coordinate
+    xCenter = xCenter / count;
+    yCenter = yCenter / count;
+    zCenter = zCenter / count;
+    
+    double lngCenterRadians = atan2(yCenter, xCenter);
+    double hyp = sqrt(pow(xCenter, 2) + pow(yCenter, 2));
+    double latCenterRadians = atan2(zCenter, hyp);
+    
+    double latCenter = [self radiansToDegrees:latCenterRadians];
+    double lngCenter = [self radiansToDegrees:lngCenterRadians];
+    return CLLocationCoordinate2DMake(latCenter, lngCenter);
+}
+
+-(double) degreesToRadians:(CLLocationDegrees)degrees
+{
+    return (degrees * M_PI)/180.0;
+}
+
+-(CLLocationDegrees) radiansToDegrees:(double)radians
+{
+    return (radians * 180)/M_PI;
+}
+
 @end
 
 
