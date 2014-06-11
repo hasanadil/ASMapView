@@ -51,6 +51,7 @@ double const kASMapViewBaseZoom = 2;
     });
 }
 
+/*
 #pragma mark touch handling
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -108,6 +109,7 @@ double const kASMapViewBaseZoom = 2;
 {
     [self setZoomTouchState:ASMapViewTouchStateNormal];
 }
+ */
 
 #pragma mark - Zoom controls
 
